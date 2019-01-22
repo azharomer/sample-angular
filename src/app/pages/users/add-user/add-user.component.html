@@ -1,0 +1,36 @@
+<form [formGroup]="form" (ngSubmit)="add()">
+  <mat-grid-list cols="2" rowHeight="250px">
+    <mat-grid-tile>
+      <div class="example-container">
+        <input type="hidden" formControlName="id">
+        <mat-form-field appearance="outline">
+          <mat-label>Name</mat-label>
+          <input matInput placeholder="Placeholder" formControlName="name" required>
+          <mat-error>Please Enter Name</mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>Email</mat-label>
+          <input matInput placeholder="Enter your email" formControlName="email" required>
+          <mat-error *ngIf="form.controls.email.hasError('required')">Please Enter Email </mat-error>
+          <mat-error *ngIf="form.controls.email.hasError('email')">Please Enter Correct Format for Email </mat-error>
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+    <mat-grid-tile>
+      <div class="example-container first-row add-bottom-padding">
+          <mat-form-field appearance="outline">
+              <mat-label>Password</mat-label>
+            <input matInput placeholder="Enter your password" [type]="hide ? 'password' : 'text'" formControlName="password"
+              required>
+            <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+            <mat-error *ngIf="form.controls.password.hasError('required')">Please Enter Password</mat-error>
+            <mat-error *ngIf="form.controls.password.hasError('minlength')">Min lenght for Password 6 digit</mat-error>
+          </mat-form-field>
+        <div class="button-row">
+          <button class="mat-raised-button" (click)="close()">Close</button>
+          <button class="mat-raised-button mat-primary" type="submit" [disabled]="!form.valid">Save</button>
+        </div>
+      </div>
+    </mat-grid-tile>
+  </mat-grid-list>
+</form>

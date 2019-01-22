@@ -1,1 +1,86 @@
 /* You can add global styles to this file, and also import other style files */
+
+@import '~@angular/material/prebuilt-themes/indigo-pink.css';
+body {
+    margin: 0;
+}
+
+snack-bar-container.sucsses {
+    background-color: rgb(68, 202, 79);
+    color: white;
+}
+
+snack-bar-container.notification simple-snack-bar {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.contain {
+    padding: 15px;
+}
+
+.confirm-dialog-container .mat-dialog-container {
+    border-radius: .25em .25em .4em .4em;
+    padding: 0px;
+}
+
+.confirm-dialog-container div.content-container {
+    display: flex;
+    margin: 5px 5px 15px 5px;
+    color: #ccc;
+    text-align: center;
+    height: 60px;
+
+}
+
+.confirm-dialog-container #close-icon {
+    margin-left: auto;
+    order: 2;
+    font-weight: bolder;
+}
+.confirm-dialog-container #close-icon:hover {
+  cursor: pointer;
+}
+.confirm-dialog-container #no-button {
+    height: 50%;
+    width: 50%;
+    background-color: #fc7169;
+    color: #fff;
+    border-radius: 0px;
+}
+
+.confirm-dialog-container #yes-button {
+    height: 50%;
+    width: 50%;
+    background-color: #b6bece;
+    color: #fff;
+    border-radius: 0px;
+}
+
+.confirm-dialog-container span.content-span {
+    padding: 35px 16px;
+    text-align: center;
+    font-size: 20px;
+}
+
+.btn-dailog-close {
+    width: 45px;
+    min-width: 0px !important;
+    height: 40px;
+    padding: 0px !important;
+}
+.mat-grid-tile .mat-figure {
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  position: absolute;
+  display: flex;
+  align-items: flex-start !important;
+  justify-content: flex-start !important;
+  height: 100%;
+  padding: 0;
+  margin: 0;
+}
+
+

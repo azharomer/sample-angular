@@ -1,0 +1,21 @@
+
+/* Structure */
+table {
+  width: 100%;
+}
+
+
+th.mat-sort-header-sorted {
+  color: black;
+}
+.example-button-row {
+text-align: right
+}
+.mat-dialog-container {
+  padding: 12px !important;
+
+}
+.mat-form-field {
+  font-size: 14px;
+  width: 25%;
+}

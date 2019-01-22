@@ -1,0 +1,47 @@
+<form [formGroup]="form" (ngSubmit)="add()">
+    <mat-grid-list cols="2" rowHeight="350px">
+      <mat-grid-tile>
+        <div class="example-container">
+          <input type="hidden" formControlName="id">
+          <mat-form-field appearance="outline">
+            <mat-label>Name</mat-label>
+            <input matInput placeholder="Placeholder"  formControlName="name" required>
+            <mat-error>Please Enter Name</mat-error>
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+              <mat-label>English Name</mat-label>
+              <input matInput placeholder="Placeholder"  formControlName="englishName" required>
+              <mat-error>Please Enter English Name</mat-error>
+            </mat-form-field>
+          <mat-form-field appearance="outline">
+                <mat-label>ISO Code</mat-label>
+                <input matInput placeholder="Placeholder"  formControlName="isoCode" required>
+                <mat-error>Please Enter English ISO Code</mat-error>
+           </mat-form-field>
+        </div>
+      </mat-grid-tile>
+      <mat-grid-tile >
+        <div class="example-container">
+                <mat-form-field appearance="outline">
+                    <mat-label>Code 1</mat-label>
+                    <input matInput placeholder="Placeholder"  formControlName="code_1" required>
+                    <mat-error>Please Enter Code 1</mat-error>
+                  </mat-form-field>
+                  <mat-form-field appearance="outline">
+                      <mat-label>Code </mat-label>
+                      <input matInput placeholder="Placeholder"  formControlName="code_2" required>
+                      <mat-error>Please Enter Code 2</mat-error>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Encoding </mat-label>
+                        <input matInput placeholder="Placeholder"  formControlName="encoding" required>
+                        <mat-error>Please Enter Encoding </mat-error>
+                      </mat-form-field>
+          <div class="button-row">
+              <button class="mat-raised-button" (click)="close()">Close</button>
+              <button class="mat-raised-button mat-primary" type="submit" [disabled]="!form.valid">Save</button>
+            </div>
+        </div>
+      </mat-grid-tile>
+         </mat-grid-list>
+  </form>

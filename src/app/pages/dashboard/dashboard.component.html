@@ -1,0 +1,65 @@
+<mat-sidenav-container class="container">
+  <mat-sidenav  #drawer class="sidenav bottom-to-top" fixedInViewport="true"
+  [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+  [mode]="(isHandset$ | async) ? 'over' : 'side'"
+  [opened]="!(isHandset$ | async)">
+
+    <mat-toolbar  class="header-box-shadow">
+          <img src="https://www.polymer-project.org/images/logos/p-logo.svg" style="height:60%">
+          <span fxFlex></span>
+        Siaq
+    </mat-toolbar>
+      <mat-accordion multi="true" displayMode="flat">
+          <mat-nav-list class="ml-0" dense>
+            <a mat-list-item  routerLink="user">Users</a>
+            <a mat-list-item  routerLink="entry">  Entries </a>
+            <a mat-list-item  routerLink="context">Context </a>
+            <a mat-list-item  routerLink="source">Sources</a>
+            <a mat-list-item  routerLink="sorceUrl">Source Url</a>
+            <a mat-list-item  routerLink="language">Language</a>
+          </mat-nav-list>
+      </mat-accordion>
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+    <mat-toolbar color="primary" class="header-box-shadow">
+ <button
+      type="button"
+      aria-label="Toggle sidenav"
+      mat-icon-button
+      (click)="drawer.toggle()"
+      *ngIf="isHandset$ | async">
+      <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+    </button>
+      <button mat-button>
+        <mat-icon class="mr-1">home</mat-icon>
+        Home
+      </button>
+
+      <span class="spacer"></span>
+      <button mat-button [matMenuTriggerFor]="menu" fxShow.lt-md="false" fxShow.gt-sm="true">
+        <mat-icon>account_circle</mat-icon>
+        <span class="ml-2">Account</span>
+      </button>
+      <button mat-icon-button [matMenuTriggerFor]="menu" fxShow.lt-md="true" fxShow.gt-sm="false">
+        <mat-icon>account_circle</mat-icon>
+      </button>
+      <mat-menu #menu="matMenu" overlapTrigger="false">
+        <button mat-menu-item>
+          <mat-icon>account_circle</mat-icon>
+          <span>My Account</span>
+        </button>
+        <button mat-menu-item>
+          <mat-icon>settings</mat-icon>
+          <span>Settings</span>
+        </button>
+        <button mat-menu-item>
+          <mat-icon>money</mat-icon>
+          <span>Billing</span>
+        </button>
+      </mat-menu>
+      <mat-icon class="ml-3" title="Logout">exit_to_app</mat-icon>
+    </mat-toolbar>
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
+</mat-sidenav-container>

@@ -1,0 +1,29 @@
+<form [formGroup]="form" (ngSubmit)="add()">
+  <mat-grid-list cols="2" rowHeight="150px">
+    <mat-grid-tile >
+      <div class="example-container">
+        <input type="hidden" formControlName="id">
+        <mat-form-field appearance="outline">
+          <mat-label>Title</mat-label>
+          <input matInput placeholder="Placeholder"  formControlName="title" required>
+          <mat-error>Please Enter titel</mat-error>
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+    <mat-grid-tile >
+      <div class="example-container">
+        <mat-form-field appearance="outline">
+          <mat-label>Time</mat-label>
+          <input matInput placeholder="24hr format" aria-label="24hr format"
+            [ngxTimepicker]="fullTime" [format]="24" formControlName="time" readonly>
+          <ngx-material-timepicker #fullTime></ngx-material-timepicker>
+          <mat-error>Please Select time</mat-error>
+        </mat-form-field>
+        <div class="button-row">
+            <button class="mat-raised-button" (click)="close()">Close</button>
+            <button class="mat-raised-button mat-primary" type="submit" [disabled]="!form.valid">Save</button>
+          </div>
+      </div>
+    </mat-grid-tile>
+       </mat-grid-list>
+</form>
