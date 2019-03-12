@@ -1,22 +1,39 @@
+<h2 mat-dialog-title class="title">{{ edit ? 'Edit' : 'Create New' }} Context </h2>
+
 <form [formGroup]="form" (ngSubmit)="add()">
-    <mat-grid-list cols="2" rowHeight="150px">
+    <mat-grid-list cols="1" rowHeight="330px">
       <mat-grid-tile >
         <div class="example-container">
           <input type="hidden" formControlName="id">
           <mat-form-field appearance="outline">
             <mat-label>Name</mat-label>
             <input matInput placeholder="Placeholder"  formControlName="name" required>
-            <mat-error>Please Enter Name</mat-error>
+            <mat-error *ngIf="form.controls.name.hasError('required')">Please Enter Name</mat-error>
+            <mat-error *ngIf="form.get('name').errors?.serverError">
+              {{ form.get('name').errors?.serverError }}
+            </mat-error>
           </mat-form-field>
-        </div>
-      </mat-grid-tile>
-      <mat-grid-tile >
-        <div class="example-container">
-                <mat-form-field appearance="outline">
-                    <mat-label>Type</mat-label>
-                    <input matInput placeholder="Placeholder"  formControlName="type" required>
-                    <mat-error>Please Enter type</mat-error>
-                  </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Type</mat-label>
+            <input matInput placeholder="Placeholder"  formControlName="type" required>
+            <mat-error>Please Enter type</mat-error>
+          </mat-form-field>
+          <mat-form-field class="example-chip-list">
+            <mat-chip-list #chipList formArrayName="tags">
+              <mat-chip *ngFor="let name of form.get('tags').controls; let i=index;"
+                        [selectable]="selectable"
+                        [removable]="removable" (removed)="remove(form, i)">
+                {{name.value}}
+                <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+              </mat-chip>
+              <input matInput placeholder="New Tags..."
+                     [matChipInputFor]="chipList"
+                     [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                     [matChipInputAddOnBlur]="addOnBlur"
+                     (matChipInputTokenEnd)="addTags($event, form)" required>
+            </mat-chip-list>
+            <mat-error>At least 1 name need to be added</mat-error>
+          </mat-form-field>
 
           <div class="button-row">
               <button class="mat-raised-button" (click)="close()">Close</button>
@@ -24,5 +41,5 @@
             </div>
         </div>
       </mat-grid-tile>
-         </mat-grid-list>
+   </mat-grid-list>
   </form>

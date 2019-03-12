@@ -13,12 +13,13 @@ export class SourceUrlService {
   /**
    * load all SourceUrl from APIs
    */
-  async loadSourceUrl(): Promise<any> {
-    return await this.service.httpServiceGet(this.url.sourceUrl);
+  async loadSourceUrl(number, size): Promise<any> {
+    const  url = `${this.url.sourceUrl}${number}&pagesize=${size}`;
+    return await this.service.httpServiceGet(url);
   }
 
   async findSourceUrl(id): Promise<any> {
-    const  url = `${this.url.sourceUrl_find}/${id}`;
+    const  url = `${this.url.sourceUrl_data}/${id}`;
     return await this.service.httpServiceGet(url);
   }
 
@@ -28,12 +29,12 @@ export class SourceUrlService {
 
 
   async updateSourceUrl(data): Promise<any> {
-    const  url = `${this.url.sourceUrl_update}/${data.id}`;
+    const  url = `${this.url.sourceUrl_data}/${data.id}`;
     return await this.service.httpServicePut(url, data);
   }
 
   async deleteSourceUrl(id): Promise<any> {
-    const url = `${this.url.sourceUrl_delete}/${id}`;
+    const url = `${this.url.sourceUrl_data}/${id}`;
     return await this.service.httpServiceDelete(url);
   }
 }

@@ -11,63 +11,66 @@ import { ServiceName } from '../service/service';
 export class ApiService {
   options: any;
   constructor(public http: Http, public serviceName: ServiceName) {
-    // @TODO: @Azhar #Important all AJAX calls should be JSON application/json encoded
     const headers = new Headers({
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
     });
+
     this.options = new RequestOptions({ headers: headers });
   }
 
   /** Post service call, to all database calls */
-  httpServicePost(service_name: string, requestData: Object = {}): Promise<any> {
-    return new Promise((resolve, reject) => {
-      this.http
-        .post(service_name, requestData, this.options)
-        .subscribe(
-          response => resolve(response.json()),
-          error => reject(error.json())
-        );
-    });
+  async httpServicePost(service_name: string, requestData: Object = {}): Promise<any> {
+    try {
+      const res = await this.http.post(service_name, requestData, this.options).toPromise();
+      return res.json();
+      } catch (error) {
+      return await error;
+    }
   }
 
   /** PUT service call, to all database calls */
-  httpServicePut(service_name: string, requestData: Object = {}): Promise<any> {
-    return new Promise((resolve, reject) => {
-      this.http
-        .put(service_name, requestData, this.options)
-        .subscribe(
-          response => resolve(response.json()),
-          error => reject(error.json())
-        );
-    });
+  async httpServicePut(service_name: string, requestData: Object = {}): Promise<any> {
+    try {
+      const res = await this.http.put(service_name, requestData, this.options).toPromise();
+      return res.json();
+      } catch (error) {
+      return error;
+    }
   }
 
   /** GET service call, to all database calls */
-  httpServiceGet(service_name: string): Promise<any> {
-    return new Promise((resolve, reject) => {
-      this.http
-        .get(service_name)
-        .subscribe(
-          response => resolve(response.json()),
-          error => reject(error.json())
-        );
-    });
+  async httpServiceGet(service_name: string): Promise<any> {
+    try {
+      const res = await this.http.get(service_name, this.options).toPromise();
+      return res.json();
+    } catch (error) {
+      return await error;
+    }
+  }
+  /** GET service call, to all database calls with search value */
+  async httpServiceSearchGet(service_name: string, params: any): Promise<any> {
+    try {
+      const res = await this.http.get(service_name, params).toPromise();
+      return res.json();
+    } catch (error) {
+      return await error;
+    }
   }
 
+
   /** DELETE service call, to all database calls */
-  httpServiceDelete(service_name: string): Promise<any> {
-    return new Promise((resolve, reject) => {
-      this.http
-        .delete(service_name, this.options)
-        .subscribe(
-          response => resolve(response.json()),
-          error => reject(error.json())
-        );
-    });
+  async httpServiceDelete(service_name: string): Promise<any> {
+    try {
+      const res = await this.http.delete(service_name, this.options).toPromise();
+      return res.json();
+    } catch (error) {
+      return await error;
+    }
   }
 
   /** Error handler to all service calls */
-  private handleError(error) {
-    return Observable.throw(error.json().error || 'Server error');
+  async  handleError(error) {
+    return await (error.json() || 'Server error');
   }
 }

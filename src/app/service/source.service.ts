@@ -9,16 +9,24 @@ export class SourceService {
 
   constructor(protected service: ApiService, protected url: ServiceName) {}
 
-
   /**
    * load all Source from APIs
    */
-  async loadSource(): Promise<any> {
-    return await this.service.httpServiceGet(this.url.source);
+  async loadSource(number, size): Promise<any> {
+    console.log(number);
+    const  url = `${this.url.source}${number}&pagesize=${size}`;
+    return await this.service.httpServiceGet(url);
+  }
+   searchSource(value) {
+    const url = `${this.url.source_search}`;
+    return  this.service.httpServiceSearchGet(url, {params: {
+        q: value || '',
+        _sort: 'name'
+      }});
   }
 
   async findSource(id): Promise<any> {
-    const  url = `${this.url.source_find}/${id}`;
+    const  url = `${this.url.source_data}/${id}`;
     return await this.service.httpServiceGet(url);
   }
 
@@ -28,12 +36,12 @@ export class SourceService {
 
 
   async updateSource(data): Promise<any> {
-    const  url = `${this.url.source_update}/${data.id}`;
+    const  url = `${this.url.source_data}/${data.id}/`;
     return await this.service.httpServicePut(url, data);
   }
 
-  async deleteSource(id): Promise<any> {
-    const url = `${this.url.source_delete}/${id}`;
+  async deleteSource(data): Promise<any> {
+    const url = `${this.url.source_data}/${data.id}`;
     return await this.service.httpServiceDelete(url);
   }
 }

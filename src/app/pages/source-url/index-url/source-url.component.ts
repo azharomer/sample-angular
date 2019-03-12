@@ -5,14 +5,9 @@ import { DialogService } from '../../../service/dialog.service';
 import { SourceUrlService } from '../../../service/source-url.service';
 import { NotificationService } from '../../../service/notification.service';
 import {MatDialog, MatDialogConfig, MatSort, MatTableDataSource, MatPaginator} from '@angular/material';
+import {ISourceUrl} from '../../../model/data';
 
-export interface ISourceUrl {
-  id: number;
-  url: string;
-  type: string;
-  source: string;
-  language: string;
-}
+
 
 
 @Component({
@@ -25,7 +20,13 @@ export class SourceUrlComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   sourceUrl: ISourceUrl[] = [];
-  displayedColumns: string[] = ['id', 'url', 'type', 'source', 'language', 'action'];
+  spinner = true;
+  pageLength: number;
+  total: number;
+  pageSize = 5;
+  pageIndex = 0;
+  pageSizeOptions = [5, 10, 25, 100];
+  displayedColumns: string[] = ['id', 'title', 'url', 'source', 'language', 'tags', 'action'];
   dataSource = new MatTableDataSource<ISourceUrl>();
 
   constructor(private dialog: MatDialog,
@@ -40,10 +41,11 @@ export class SourceUrlComponent implements OnInit {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
-  ngOnInit() {
-    this.getSourceUrl();
-    this.dataSource.sort = this.sort;
-    this.dataSource.paginator = this.paginator;
+  async ngOnInit() {
+      await this.getSourceUrl(1, this.pageSize);
+      this.pageLength = this.total;
+      this.dataSource.sort = this.sort;
+      this.dataSource.paginator = this.paginator;
   }
 
   openAddDialog() {
@@ -51,7 +53,11 @@ export class SourceUrlComponent implements OnInit {
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
     dialogConfig.width = '60%';
-    this.dialog.open(AddUrlComponent, dialogConfig);
+    this.dialog.open(AddUrlComponent, dialogConfig).afterClosed().subscribe(res => {
+      if (res) {
+        this.refreshTable();
+      }
+    });
   }
   openEditDialog(row) {
     const dialogConfig = new MatDialogConfig();
@@ -59,27 +65,57 @@ export class SourceUrlComponent implements OnInit {
     dialogConfig.autoFocus = true;
     dialogConfig.width = '60%';
     dialogConfig.data = row ;
-    this.dialog.open(AddUrlComponent, dialogConfig);
+    this.dialog.open(AddUrlComponent, dialogConfig).afterClosed().subscribe(res => {
+      if (res) {
+        this.refreshTable();
+      }
+    });
   }
   deleteSourceUrl(row) {
     // delete Service
-    this.dialogService.openConfirmDialog('Are You Sure To Delete this record?')
-    .afterClosed().subscribe(res => {
+    this.dialogService.openConfirmDialog(`Are You Sure you want to delete the source URL <strong class='color'>${row.title} </strong>,
+         all the news URLs form it and their links with News entries (news entries will not be deleted)?`, 'Delete Source URL')
+      .afterClosed().subscribe(res => {
       if (res) {
         this.service.deleteSourceUrl(row.id)
-          .then(data => console.log(data))
+          .then(data => {
+            this.refreshTable();
+          } )
           .catch(err => console.log(err));
       }
     });
 
   }
 
-  getSourceUrl() {
+
+  async getSourceUrl(number, size) {
     this.sourceUrl = [];
-    this.service.loadSourceUrl().then((data) => {
-      this.sourceUrl = data.data;
+    this.spinner = true;
+    await this.service.loadSourceUrl(number, size).then((data) => {
+      this.spinner = false;
+      this.sourceUrl = this.dataSource.data.concat(data.data);
       this.dataSource.data = this.sourceUrl;
+      this.total = data.total;
     });
+  }
+
+  async pageChangeEvent(event) {
+    if (this.pageIndex === event.pageIndex && this.pageSize !== event.pageSize) {
+      this.dataSource.data = [];
+      await this.getSourceUrl(event.pageIndex + 1, event.pageSize);
+      this.pageSize = event.pageSize;
+    } else {
+      if (event.pageIndex > this.pageIndex) {
+        await this.getSourceUrl(event.pageIndex + 1, event.pageSize);
+        this.pageIndex = event.pageIndex ;
+      }
+    }
+    this.pageLength = this.total;
+  }
+  async refreshTable() {
+    this.dataSource.data = [];
+    await this.getSourceUrl(1, this.pageSize);
+    this.paginator._changePageSize(this.paginator.pageSize);
   }
 
 }

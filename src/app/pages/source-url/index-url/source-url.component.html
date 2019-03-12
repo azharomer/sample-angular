@@ -12,52 +12,66 @@
         <th mat-header-cell *matHeaderCellDef mat-sort-header>No.</th>
         <td mat-cell *matCellDef="let element">{{ element.id }}</td>
       </ng-container>
+      <!-- Title Column -->
+      <ng-container matColumnDef="title">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Title</th>
+        <td mat-cell *matCellDef="let element">{{ element.title }}</td>
+      </ng-container>
       <!-- Url Column -->
       <ng-container matColumnDef="url">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>Url</th>
         <td mat-cell *matCellDef="let element">{{ element.url }}</td>
       </ng-container>
-      <!-- Type Column -->
-      <ng-container matColumnDef="type">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Type</th>
-        <td mat-cell *matCellDef="let element">{{ element.type }}</td>
-      </ng-container>
       <!-- source Column -->
       <ng-container matColumnDef="source">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>Source</th>
-        <td mat-cell *matCellDef="let element">{{ element.source }}</td>
+        <td mat-cell *matCellDef="let element">{{ element.source.name }}</td>
       </ng-container>
       <!-- language Column -->
       <ng-container matColumnDef="language">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Clanguage</th>
-        <td mat-cell *matCellDef="let element">{{ element.language }}</td>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>language</th>
+        <td mat-cell *matCellDef="let element">{{ element.languages.english_name }}</td>
+      </ng-container>
+      <!-- tags Column -->
+      <ng-container matColumnDef="tags">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Tags</th>
+        <td mat-cell *matCellDef="let element">{{ element.tags }}</td>
       </ng-container>
 
       <!-- action Column -->
       <ng-container matColumnDef="action">
         <th mat-header-cell *matHeaderCellDef></th>
         <td mat-cell *matCellDef="let element">
-          <button
-            mat-icon-button
-            color="primary"
-            (click)="openEditDialog(element)"
-          >
-            <mat-icon>edit</mat-icon>
+          <button mat-icon-button [matMenuTriggerFor]="menu">
+            <mat-icon>more_vert</mat-icon>
           </button>
-          <button mat-icon-button color="warn" (click)="deleteSourceUrl(element)">
-            <mat-icon>delete</mat-icon>
-          </button>
+          <mat-menu #menu="matMenu">
+            <button mat-menu-item>
+              <mat-icon>content_paste</mat-icon>
+              <span>View</span>
+            </button>
+            <button mat-menu-item    (click)="openEditDialog(element)">
+              <mat-icon>edit</mat-icon>
+              <span>Edit</span>
+            </button>
+            <button mat-menu-item class="deleteBtn" (click)="deleteSourceUrl(element)">
+              <mat-icon color="warn">delete</mat-icon>
+              <span>delete</span>
+            </button>
+          </mat-menu>
         </td>
       </ng-container>
 
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
     </table>
-
-    <mat-paginator
-      [pageSizeOptions]="[5, 10, 25, 100]"
-      showFirstLastButtons
-    ></mat-paginator>
+  <div class="spinner-container" *ngIf="spinner" style="display: flex; justify-content: center; align-items: center">
+    <mat-spinner  strokeWidth="3" [diameter]="50" ></mat-spinner>
+  </div>
+  <mat-paginator [length]="pageLength"
+                 [pageSize]="pageSize"
+                 [pageSizeOptions]="pageSizeOptions"
+                 (page)="pageChangeEvent($event)"></mat-paginator>
 
     <div class="example-button-row">
       <button mat-fab color="primary" (click)="openAddDialog()">

@@ -1,8 +1,7 @@
-/* .example-container {
-  width: 100%;
-padding: 5%;
+.mat-dialog-container {
+  display: block;
+  padding: 18px !important;
 }
-
-.example-container>* {
-    width: 100%;
-} */
+.cdk-overlay-pane {
+  width :35% !important;;
+}

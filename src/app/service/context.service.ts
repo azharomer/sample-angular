@@ -12,8 +12,9 @@ export class ContextService {
   /**
    * load all context from APIs
    */
-  async loadContext(): Promise<any> {
-    return await this.service.httpServiceGet(this.url.context);
+  async loadContext(number, size): Promise<any> {
+    const  url = `${this.url.context}${number}&pagesize=${size}`;
+    return await this.service.httpServiceGet(url);
   }
 
   async findContext(id): Promise<any> {

@@ -7,6 +7,7 @@ import {
   FormGroup,
   FormControl
 } from '@angular/forms';
+import {TokenService} from '../../service/token.service';
 
 @Component({
   selector: 'app-login',
@@ -21,9 +22,12 @@ export class LoginComponent implements OnInit {
     email: '',
     password: ''
   };
+  error: any;
+
   constructor(public fb: FormBuilder,
               public service: AuthService,
-              private router: Router,
+              protected router: Router,
+              protected token: TokenService,
               ) {
 
     this.loginForm = this.fb.group({
@@ -40,19 +44,27 @@ export class LoginComponent implements OnInit {
   }
 
   login() {
-    // console.log(this.loginForm.value, this.loginData);
-    // this.apiService.httpServicePost(this.serviceName.login, this.loginData)
-    // .subscribe( data  => {
-    //   this.router.navigate(['user']);
 
-    // });
     if (this.loginForm.valid) {
-      this.service.login(this.loginData).then(res => console.log(res))
-        .catch(err => console.log(err));
+      this.service.login(this.loginData)
+        .then(response => {
+          console.log(response);
+          this.handleResponse(response);
+          this.router.navigate(['home']);
+        })
+        .catch(err => this.handleError(err));
     }
-
-    this.router.navigate(['home']);
   }
+
+  handleError(error) {
+    this.error = error.error;
+    console.log(error);
+  }
+
+  handleResponse(data) {
+    this.token.handle(data.access_token);
+  }
+
 
   getErrorMessage(input: String): string {
     if (input === 'Email') {

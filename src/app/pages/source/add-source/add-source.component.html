@@ -1,12 +1,33 @@
+<h2 mat-dialog-title class="title" >{{ edit ? 'Edit' : 'Create New' }} Source </h2>
+
 <form [formGroup]="form" (ngSubmit)="add()">
-  <mat-grid-list cols="2" rowHeight="320px">
+  <mat-grid-list cols="2" rowHeight="520px">
     <mat-grid-tile>
       <div class="example-container">
         <input type="hidden" formControlName="id">
         <mat-form-field appearance="outline">
           <mat-label>Name</mat-label>
           <input matInput placeholder="Placeholder" formControlName="name" required>
-          <mat-error>Please Enter Name</mat-error>
+          <mat-error *ngIf="form.controls.name.hasError('required')">Please Enter Name</mat-error>
+          <mat-error *ngIf="form.get('name').errors?.serverError">
+            {{ form.get('name').errors?.serverError }}
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Url</mat-label>
+          <input matInput placeholder="Placeholder" formControlName="url" required>
+          <mat-error *ngIf="form.controls.url.hasError('required')">Please Enter Url</mat-error>
+          <mat-error *ngIf="form.controls.url.hasError('pattern')">Please Enter valid Url</mat-error>
+          <mat-error *ngIf="form.get('url').errors?.serverError">
+            {{ form.get('url').errors?.serverError }}
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>SiteMap</mat-label>
+          <input matInput placeholder="Placeholder" formControlName="sitemap" required>
+          <mat-error *ngIf="form.controls.sitemap.hasError('required')">Please Enter SiteMap</mat-error>
+          <mat-error *ngIf="form.controls.sitemap.hasError('pattern')">Please Enter valid Url</mat-error>
+
         </mat-form-field>
         <mat-form-field appearance="outline">
           <mat-label>Type</mat-label>
@@ -14,27 +35,49 @@
           <mat-error>Please Enter Type</mat-error>
         </mat-form-field>
         <mat-form-field appearance="outline">
-          <mat-label>Country</mat-label>
-          <input matInput placeholder="Placeholder" formControlName="country" required>
-          <mat-error>Please Enter Country</mat-error>
+          <mat-label>Official</mat-label>
+          <input matInput placeholder="Placeholder" formControlName="official" required>
+          <mat-error>Please Enter Official</mat-error>
         </mat-form-field>
+
       </div>
     </mat-grid-tile>
     <mat-grid-tile>
       <div class="example-container">
         <mat-form-field appearance="outline">
+          <mat-label>Side</mat-label>
+          <input matInput placeholder="Placeholder" formControlName="side" required>
+          <mat-error>Please Enter Side</mat-error>
+        </mat-form-field>
+        <mat-form-field class="example-chip-list">
+          <mat-chip-list #chipList formArrayName="tags">
+            <mat-chip *ngFor="let name of form.get('tags').controls; let i=index;"
+                      [selectable]="selectable"
+                      [removable]="removable" (removed)="remove(form, i)">
+              {{name.value}}
+              <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+            </mat-chip>
+            <input matInput placeholder="New Tags..."
+                   [matChipInputFor]="chipList"
+                   [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                   [matChipInputAddOnBlur]="addOnBlur"
+                   (matChipInputTokenEnd)="addTags($event, form)" required>
+          </mat-chip-list>
+          <mat-error>At least 1 name need to be added</mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Country</mat-label>
+          <input matInput placeholder="Placeholder" formControlName="country" required>
+          <mat-error>Please Enter Country</mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
           <mat-label>Speciality</mat-label>
           <input matInput placeholder="Placeholder" formControlName="speciality" required>
           <mat-error>Please Enter Speciality</mat-error>
         </mat-form-field>
-        <mat-form-field appearance="outline">
-            <mat-label>Language</mat-label>
 
-          <mat-select  placeholder="Language" formControlName="language_id" required>
-            <mat-option *ngFor="let option of languages" [value]="option.id">{{ option.name }}</mat-option>
-          </mat-select>
-          <mat-error>Please Select Language</mat-error>
-        </mat-form-field>
+        <app-search-select placeholder="Language" width="95%" formControlName="language_id" [autoActiveFirstOption]=true
+                           [dataSource]="dataSource"></app-search-select>
         <div class="button-row">
           <button class="mat-raised-button" (click)="close()">Close</button>
           <button class="mat-raised-button mat-primary" type="submit" [disabled]="!form.valid">Save</button>

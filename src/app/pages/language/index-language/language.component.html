@@ -22,22 +22,22 @@
     <!-- English Name Column -->
     <ng-container matColumnDef="englishName">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>English Name</th>
-      <td mat-cell *matCellDef="let element">{{ element.englishName }}</td>
+      <td mat-cell *matCellDef="let element">{{ element.english_name }}</td>
     </ng-container>
     <!-- ISO Code Column -->
     <ng-container matColumnDef="isoCode">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>ISO Code</th>
-      <td mat-cell *matCellDef="let element">{{ element.isoCode }}</td>
+      <td mat-cell *matCellDef="let element">{{ element.iso_code }}</td>
     </ng-container>
     <!-- Code1 Column -->
-    <ng-container matColumnDef="code_1">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Code 1</th>
-      <td mat-cell *matCellDef="let element">{{ element.code_1 }}</td>
-    </ng-container>
-    <!-- Code2 Column -->
     <ng-container matColumnDef="code_2">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Code 2</th>
       <td mat-cell *matCellDef="let element">{{ element.code_2 }}</td>
+    </ng-container>
+    <!-- Code2 Column -->
+    <ng-container matColumnDef="code_3">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Code 3</th>
+      <td mat-cell *matCellDef="let element">{{ element.code_3 }}</td>
     </ng-container>
     <!-- Encoding Column -->
     <ng-container matColumnDef="encoding">
@@ -49,27 +49,36 @@
     <ng-container matColumnDef="action">
       <th mat-header-cell *matHeaderCellDef></th>
       <td mat-cell *matCellDef="let element">
-        <button
-          mat-icon-button
-          color="primary"
-          (click)="openEditDialog(element)"
-        >
-          <mat-icon>edit</mat-icon>
+        <button mat-icon-button [matMenuTriggerFor]="menu">
+          <mat-icon>more_vert</mat-icon>
         </button>
-        <button mat-icon-button color="warn" (click)="deleteLanguage(element)">
-          <mat-icon>delete</mat-icon>
-        </button>
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item>
+            <mat-icon>content_paste</mat-icon>
+            <span>View</span>
+          </button>
+          <button mat-menu-item  (click)="openEditDialog(element)">
+            <mat-icon>edit</mat-icon>
+            <span>Edit</span>
+          </button>
+          <button mat-menu-item class="deleteBtn" (click)="deleteLanguage(element)">
+            <mat-icon color="warn">delete</mat-icon>
+            <span>delete</span>
+          </button>
+        </mat-menu>
       </td>
     </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
   </table>
-
-  <mat-paginator
-    [pageSizeOptions]="[5, 10, 25, 100]"
-    showFirstLastButtons
-  ></mat-paginator>
+  <div class="spinner-container" *ngIf="spinner" style="display: flex; justify-content: center; align-items: center">
+    <mat-spinner  strokeWidth="3" [diameter]="50" ></mat-spinner>
+  </div>
+  <mat-paginator [length]="pageLength"
+                 [pageSize]="pageSize"
+                 [pageSizeOptions]="pageSizeOptions"
+                 (page)="pageChangeEvent($event)"></mat-paginator>
 
   <div class="example-button-row">
     <button mat-fab color="primary" (click)="openAddDialog()">

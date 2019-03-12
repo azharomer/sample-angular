@@ -12,6 +12,7 @@ import {FormControl, FormGroup, Validators} from '@angular/forms';
   styleUrls: ['./add-user.component.css']
 })
 export class AddUserComponent implements OnInit {
+  edit = false;
 
   constructor( protected router: Router,
                protected dialogRef: MatDialogRef<AddUserComponent>,
@@ -37,11 +38,12 @@ export class AddUserComponent implements OnInit {
    */
   initializeFormGroup() {
     if (this.data) {
+      this.edit = true;
       this.form.setValue({
         id: this.data.id,
         name: this.data.name,
         email: this.data.email,
-        password: this.data.password,
+        password: '',
       });
     } else {
       this.form.setValue({
@@ -61,10 +63,20 @@ export class AddUserComponent implements OnInit {
     if (this.form.valid) {
       console.log(this.form.value);
       if (this.form.value.id !== '') {
-        this.service.updateUser(this.form.value).then(res => console.log(res))
+        this.service.updateUser(this.form.value)
+          .then(res => {
+            this.notification.messageSuccess('Edit User Success');
+            console.log(res);
+            this.close();
+          })
           .catch(err => console.log(err));
       } else {
-        this.service.createUser(this.form.value).then(res => console.log(res))
+        this.service.createUser(this.form.value)
+          .then(res => {
+            this.notification.messageSuccess('Create User Success');
+            console.log(res);
+            this.close();
+          })
           .catch(err => console.log(err));
       }
 
@@ -74,7 +86,6 @@ export class AddUserComponent implements OnInit {
   close() {
     this.form.reset();
     this.initializeFormGroup();
-    this.notification.messageSuccess('Create User Successfuly');
     this.dialogRef.close();
   }
 

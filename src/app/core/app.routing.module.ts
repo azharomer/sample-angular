@@ -9,18 +9,19 @@ import { EntriesComponent } from '../pages/entries/index-entry/entries.component
 import { SourceUrlComponent } from '../pages/source-url/index-url/source-url.component';
 import { LanguageComponent } from '../pages/language/index-language/language.component';
 import { AddEntryComponent } from '../pages/entries/add-entry/add-entry.component';
+import {AuthGuard} from '../service/auth-guard .service';
 
 const routes: Routes = [
   { path: 'home', component: DashboardComponent, children: [
-  { path: 'user', component: UsersComponent },
-  { path: 'context', component: ContextComponent },
-  { path: 'source', component: SourceComponent },
-  { path: 'sorceUrl', component: SourceUrlComponent },
-  { path: 'entry', component: EntriesComponent },
-  { path: 'add-entry', component: AddEntryComponent },
-  { path: 'language', component: LanguageComponent }
+  { path: 'user', component: UsersComponent, canActivateChild: [AuthGuard]},
+  { path: 'context', component: ContextComponent, canActivateChild: [AuthGuard]},
+  { path: 'source', component: SourceComponent, canActivateChild: [AuthGuard] },
+  { path: 'sorceUrl', component: SourceUrlComponent, canActivateChild: [AuthGuard] },
+  { path: 'entry', component: EntriesComponent, canActivateChild: [AuthGuard] },
+  { path: 'add-entry', component: AddEntryComponent, canActivateChild: [AuthGuard] },
+  { path: 'language', component: LanguageComponent, canActivateChild: [AuthGuard] }
 
-  ]},
+  ], canActivate: [AuthGuard]},
   { path: 'login', component: LoginComponent },
   { path: '', component: LoginComponent }
 ];

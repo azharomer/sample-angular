@@ -13,6 +13,7 @@ import {FormControl, FormGroup, Validators} from '@angular/forms';
   styleUrls: ['./add-language.component.css']
 })
 export class AddLanguageComponent implements OnInit {
+  edit = false;
 
   constructor( protected router: Router,
                protected dialogRef: MatDialogRef<AddLanguageComponent>,
@@ -25,32 +26,33 @@ export class AddLanguageComponent implements OnInit {
   form: FormGroup = new FormGroup({
     id: new FormControl(null),
     name: new FormControl('', [Validators.required]),
-    englishName: new FormControl('', [Validators.required]),
-    isoCode: new FormControl('', [Validators.required]),
-    code_1: new FormControl('', [Validators.required]),
+    english_name: new FormControl('', [Validators.required]),
+    iso_code: new FormControl('', [Validators.required]),
     code_2: new FormControl('', [Validators.required]),
+    code_3: new FormControl('', [Validators.required]),
     encoding: new FormControl('', [Validators.required]),
   });
 
   initializeFormGroup() {
     if (this.data) {
+      this.edit = true;
       this.form.setValue({
         id: this.data.id,
         name: this.data.name,
-        englishName: this.data.englishName,
-        isoCode: this.data.isoCode,
-        code_1: this.data.code_1,
+        english_name: this.data.english_name,
+        iso_code: this.data.iso_code,
         code_2: this.data.code_2,
+        code_3: this.data.code_3,
         encoding: this.data.encoding,
       });
     } else {
       this.form.setValue({
         id: '',
         name: '',
-        englishName: '',
-        isoCode: '',
-        code_1: '',
+        english_name: '',
+        iso_code: '',
         code_2: '',
+        code_3: '',
         encoding: ''
       });
     }
@@ -65,10 +67,20 @@ export class AddLanguageComponent implements OnInit {
     if (this.form.valid) {
       console.log(this.form.value);
       if (this.form.value.id !== '') {
-        this.service.updateLanguage(this.form.value).then(res => console.log(res))
+        this.service.updateLanguage(this.form.value)
+          .then(res => {
+            this.notification.messageSuccess('Edit Language Success');
+            console.log(res);
+            this.close();
+          })
           .catch(err => console.log(err));
       } else {
-        this.service.createLanguage(this.form.value).then(res => console.log(res))
+        this.service.createLanguage(this.form.value)
+          .then(res => {
+            this.notification.messageSuccess('Create Language Success');
+            console.log(res);
+            this.close();
+          })
           .catch(err => console.log(err));
       }
 
@@ -77,7 +89,6 @@ export class AddLanguageComponent implements OnInit {
   close() {
     this.form.reset();
     this.initializeFormGroup();
-    this.notification.messageSuccess('Create Context Successfuly');
     this.dialogRef.close();
   }
 

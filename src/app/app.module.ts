@@ -15,14 +15,19 @@ import { AppRoutingModule } from './core/app.routing.module';
 import { LayoutModule } from '@angular/cdk/layout';
 import { ApiService } from './service/api.service';
 import { ServiceName } from './service/service';
+
 import { EntryService } from './service/entry.service';
 import { ContextService } from './service/context.service';
 import { LanguageService } from './service/language.service';
+
 import { SourceService } from './service/source.service';
 import { SourceUrlService } from './service/source-url.service';
 import { NotificationService } from './service/notification.service';
 
+import { TokenService} from './service/token.service';
+import { AuthGuard} from './service/auth-guard .service';
 import { LoginComponent } from './pages/login/login.component';
+
 import { UsersComponent } from './pages/users/index-user/users.component';
 import { ContextComponent } from './pages/context/index-context/context.component';
 import { SourceComponent } from './pages/source/index-source/source.component';
@@ -42,7 +47,11 @@ import { AddUrlComponent } from './pages/source-url/add-url/add-url.component';
 import { AddUserComponent } from './pages/users/add-user/add-user.component';
 import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
 import { MatConfirmDialogComponent } from './pages/common-component/confirm-dialog/confirm-dialog.component';
+import { SearchSelectModule } from './pages/common-component/search-select';
+
 import { from } from 'rxjs';
+import { ViewEntryComponent } from './pages/entries/view-entry/view-entry.component';
+import { ViewContextComponent } from './pages/context/view-context/view-context.component';
 
 @NgModule({
   declarations: [
@@ -61,7 +70,9 @@ import { from } from 'rxjs';
     AddSourceComponent,
     AddUrlComponent,
     AddUserComponent,
-    MatConfirmDialogComponent
+    MatConfirmDialogComponent,
+    ViewEntryComponent,
+    ViewContextComponent
   ],
   imports: [
     BrowserModule,
@@ -73,6 +84,7 @@ import { from } from 'rxjs';
     FlexLayoutModule,
     AppRoutingModule,
     HttpClientModule,
+    SearchSelectModule,
     NgxMaterialTimepickerModule.forRoot(),
     LayoutModule,
     // ContextsModule,
@@ -85,7 +97,9 @@ import { from } from 'rxjs';
     ContextService,
     LanguageService,
     SourceService,
-    SourceUrlService
+    SourceUrlService,
+    TokenService,
+    AuthGuard,
   ],
   bootstrap: [AppComponent],
   entryComponents: [

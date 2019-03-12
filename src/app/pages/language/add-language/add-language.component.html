@@ -1,3 +1,5 @@
+<h2 mat-dialog-title class="title">{{ edit ? 'Edit' : 'Create New' }} Language </h2>
+
 <form [formGroup]="form" (ngSubmit)="add()">
     <mat-grid-list cols="2" rowHeight="350px">
       <mat-grid-tile>
@@ -10,12 +12,12 @@
           </mat-form-field>
           <mat-form-field appearance="outline">
               <mat-label>English Name</mat-label>
-              <input matInput placeholder="Placeholder"  formControlName="englishName" required>
+              <input matInput placeholder="Placeholder"  formControlName="english_name" required>
               <mat-error>Please Enter English Name</mat-error>
             </mat-form-field>
           <mat-form-field appearance="outline">
                 <mat-label>ISO Code</mat-label>
-                <input matInput placeholder="Placeholder"  formControlName="isoCode" required>
+                <input matInput placeholder="Placeholder"  formControlName="iso_code" required>
                 <mat-error>Please Enter English ISO Code</mat-error>
            </mat-form-field>
         </div>
@@ -23,14 +25,14 @@
       <mat-grid-tile >
         <div class="example-container">
                 <mat-form-field appearance="outline">
-                    <mat-label>Code 1</mat-label>
-                    <input matInput placeholder="Placeholder"  formControlName="code_1" required>
-                    <mat-error>Please Enter Code 1</mat-error>
+                    <mat-label>Code 2</mat-label>
+                    <input matInput placeholder="Placeholder"  formControlName="code_2" required>
+                    <mat-error>Please Enter Code 2</mat-error>
                   </mat-form-field>
                   <mat-form-field appearance="outline">
-                      <mat-label>Code </mat-label>
-                      <input matInput placeholder="Placeholder"  formControlName="code_2" required>
-                      <mat-error>Please Enter Code 2</mat-error>
+                      <mat-label>Code 3</mat-label>
+                      <input matInput placeholder="Placeholder"  formControlName="code_3" required>
+                      <mat-error>Please Enter Code 3</mat-error>
                     </mat-form-field>
                     <mat-form-field appearance="outline">
                         <mat-label>Encoding </mat-label>

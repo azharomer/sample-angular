@@ -14,12 +14,13 @@ export class UserService {
   /**
    * load all Users from APIs
    */
-  async loadUser(): Promise<any> {
-    return await this.service.httpServiceGet(this.url.user);
+  async loadUser(number, size): Promise<any> {
+    const  url = `${this.url.user}${number}&pagesize=${size}`;
+    return await this.service.httpServiceGet(url);
   }
 
   async findUser(id): Promise<any> {
-    const  url = `${this.url.user_find}/${id}`;
+    const  url = `${this.url.user_data}/${id}`;
     return await this.service.httpServiceGet(url);
   }
 
@@ -29,12 +30,12 @@ export class UserService {
 
 
   async updateUser(data): Promise<any> {
-    const  url = `${this.url.user_update}/${data.id}`;
+    const  url = `${this.url.user_data}/${data.id}`;
     return await this.service.httpServicePut(url, data);
   }
 
   async deleteUser(id): Promise<any> {
-    const url = `${this.url.user_delete}/${id}`;
+    const url = `${this.url.user_data}/${id}`;
     return await this.service.httpServiceDelete(url);
   }
 }

@@ -10,8 +10,8 @@ import { map } from 'rxjs/operators';
 })
 export class DashboardComponent implements OnInit {
 
-  opened = true;
-  over = 'side';
+  opened = false;
+  over = 'over';
   expandHeight = '42px';
   collapseHeight = '42px';
   displayMode = 'flat';

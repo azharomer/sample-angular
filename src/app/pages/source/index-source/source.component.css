@@ -19,3 +19,6 @@ text-align: right
   font-size: 14px;
   width: 25%;
 }
+.cdk-overlay-pane {
+  width :35% !important;;
+}

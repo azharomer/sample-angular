@@ -14,8 +14,12 @@ export class NotificationService {
   };
 
   messageSuccess(msg) {
-    this.config['panelClass'] = ['notification', 'sucsses'];
-    this.snackBar.open(msg, 'close', this.config);
+    this.config['panelClass'] = ['green-snackbar'];
+    this.snackBar.open(msg, 'Close', this.config);
+  }
+  messageError(msg) {
+    this.config['panelClass'] = ['red-snackbar'];
+    this.snackBar.open(msg, 'Close', this.config);
   }
 
 }

@@ -12,8 +12,9 @@ export class EntryService {
   /**
    * load all Entry from APIs
    */
-  async loadEntry(): Promise<any> {
-    return await this.service.httpServiceGet(this.url.entry);
+  async loadEntry(number, size): Promise<any> {
+    const  url = `${this.url.entry}${number}&pagesize=${size}`;
+    return await this.service.httpServiceGet(url);
   }
 
   async findEntry(id): Promise<any> {

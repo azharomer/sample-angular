@@ -1,5 +1,7 @@
+<h2 mat-dialog-title class="title">{{ edit ? 'Edit' : 'Create New' }} Entry</h2>
+
 <form [formGroup]="form" (ngSubmit)="add()">
-  <mat-grid-list cols="2" rowHeight="150px">
+  <mat-grid-list cols="2" rowHeight="250px">
     <mat-grid-tile >
       <div class="example-container">
         <input type="hidden" formControlName="id">
@@ -8,14 +10,27 @@
           <input matInput placeholder="Placeholder"  formControlName="title" required>
           <mat-error>Please Enter titel</mat-error>
         </mat-form-field>
+        <mat-form-field>
+          <mat-select placeholder="Toppings" formControlName="context" multiple>
+            <mat-option *ngFor="let context of contexts" [value]="context.id">{{context.name}}</mat-option>
+          </mat-select>
+        </mat-form-field>
       </div>
     </mat-grid-tile>
     <mat-grid-tile >
       <div class="example-container">
         <mat-form-field appearance="outline">
+          <mat-label>Date</mat-label>
+          <input matInput [matDatepicker]="picker" placeholder="Choose a date" formControlName="date" readonly>
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+          <mat-error>Please Select Date</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
           <mat-label>Time</mat-label>
           <input matInput placeholder="24hr format" aria-label="24hr format"
-            [ngxTimepicker]="fullTime" [format]="24" formControlName="time" readonly>
+                 [ngxTimepicker]="fullTime" [format]="24" formControlName="time" readonly>
           <ngx-material-timepicker #fullTime></ngx-material-timepicker>
           <mat-error>Please Select time</mat-error>
         </mat-form-field>

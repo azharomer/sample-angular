@@ -1,10 +1,12 @@
-<h1 mat-dialog-title>{{data.message}}</h1>
+<h1 mat-dialog-title>{{data.title}}</h1>
 <div mat-dialog-content>
-  <p><strong>CAUTION!</strong> All sub data will be deleted as well. This cannot be undone later.</p>
+  <p [innerHTML]="data.message"></p>
+  <p> <strong> Once deleted. This operation can't be reverted.</strong></p>
+
 </div>
-<div mat-dialog-actions>
-  <button mat-button id="no-button" [mat-dialog-close]="false">No</button>
-  <button mat-button id="yes-button" [mat-dialog-close]="true">Yes</button>
+<div mat-dialog-actions align="end" >
+  <button mat-button id="no-button" [mat-dialog-close]="false">Cancel</button>
+  <button mat-button id="yes-button" [mat-dialog-close]="true" style="color:red;">Delete</button>
 </div>
 
 
